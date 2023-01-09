@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_background"
+    tools:context=".ui.tagging.TaggingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:id="@+id/ivBack"
+                android:onClick="onClick"
+                android:padding="20dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="20dp"
+                android:text="Cattle Tagging"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-20dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="25dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/gray_background"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <EditText
+                        android:id="@+id/etDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/rounded_corners"
+                        android:backgroundTint="@null"
+                        android:focusable="false"
+                        android:hint="Select Date"
+                        android:visibility="gone"
+                        android:inputType="text"
+                        android:minHeight="60dp"
+                        android:padding="10dp"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/black" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_corners"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/sp_Center_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@null"
+                            android:dropDownVerticalOffset="60dp"
+                            android:dropDownWidth="match_parent"
+                            android:hint="Select Farmer"
+                            android:minHeight="60dp"
+                            android:singleLine="true"
+                            android:spinnerMode="dropdown"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_corners"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/sp_farmer_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@null"
+                            android:dropDownVerticalOffset="60dp"
+                            android:dropDownWidth="match_parent"
+                            android:hint="Select Farmer"
+                            android:minHeight="60dp"
+                            android:singleLine="true"
+                            android:spinnerMode="dropdown"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btAddFarmer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button_rounded_corners"
+                        android:minHeight="20dp"
+                        android:onClick="onClick"
+                        android:padding="10dp"
+                        android:text="@string/add_farmer"
+                        android:textColor="@color/white" />
+
+                    <EditText
+                        android:id="@+id/etMilkYeild"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_corners"
+                        android:backgroundTint="@null"
+                        android:hint="Milk Yeild"
+                        android:inputType="text"
+                        android:minHeight="60dp"
+                        android:padding="10dp"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/black" />
+
+
+                    <EditText
+                        android:id="@+id/etTagNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_corners"
+                        android:backgroundTint="@null"
+                        android:hint="Tag No"
+                        android:inputType="text"
+                        android:minHeight="60dp"
+                        android:padding="10dp"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/black" />
+
+                    <EditText
+                        android:id="@+id/etRctNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_corners"
+                        android:backgroundTint="@null"
+                        android:hint="Receipt No"
+                        android:inputType="text"
+                        android:minHeight="60dp"
+                        android:padding="10dp"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="3dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_corners"
+                            android:orientation="vertical">
+
+                            <RadioGroup
+                                android:id="@+id/radioGroup1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <RadioButton
+                                    android:id="@+id/radioBuff"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:text="Buffalo"
+                                    android:textColor="@color/black" />
+
+                                <RadioButton
+                                    android:id="@+id/radioCow"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Cow"
+                                    android:textColor="@color/black" />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_corners"
+                            android:orientation="vertical">
+
+
+                            <RadioGroup
+                                android:id="@+id/radioGroup2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <RadioButton
+                                    android:id="@+id/radioHf"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:text="HF"
+                                    android:textColor="@color/black" />
+
+                                <RadioButton
+                                    android:id="@+id/radioJersey"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Jersey"
+                                    android:textColor="@color/black" />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="3dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_corners"
+                            android:orientation="vertical">
+
+
+                            <RadioGroup
+                                android:id="@+id/radioGroup3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <RadioButton
+                                    android:id="@+id/radioLocal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:text="Local"
+                                    android:textColor="@color/black" />
+
+                                <RadioButton
+                                    android:id="@+id/radioGraded"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Graded"
+                                    android:textColor="@color/black" />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_corners"
+                            android:orientation="vertical">
+
+
+                            <RadioGroup
+                                android:id="@+id/radioGroup4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <RadioButton
+                                    android:id="@+id/radioMilk"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:text="Milking"
+                                    android:textColor="@color/black" />
+
+                                <RadioButton
+                                    android:id="@+id/radioPregnent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Pregnent"
+                                    android:textColor="@color/black" />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/ivImage1"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bio_bg"
+                            android:onClick="onClick"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_baseline_add_photo" />
+
+                        <ImageView
+                            android:id="@+id/ivImage2"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bio_bg"
+                            android:onClick="onClick"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_baseline_add_photo" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="50dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_rounded_corners"
+                            android:minHeight="50dp"
+                            android:onClick="onClick"
+                            android:id="@+id/btSave"
+                            android:text="Save"
+                            android:textColor="@color/white" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/button_rounded_corners"
+                            android:minHeight="50dp"
+                            android:text="Cancel"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</LinearLayout>

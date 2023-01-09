@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_farmers"
+        android:title="Farmers" />
+    <item
+        android:id="@+id/item_tagging"
+        android:title="Tagging" />
+    <item
+        android:id="@+id/item_retagging"
+        android:title="ReTagging" />
+    <item
+        android:id="@+id/item_claim"
+        android:title="Claim" />
+</menu>
