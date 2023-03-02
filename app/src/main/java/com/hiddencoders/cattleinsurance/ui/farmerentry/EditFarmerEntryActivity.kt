@@ -15,14 +15,13 @@ import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.hiddencoders.cattleinsurance.data.AuthListner
-import com.hiddencoders.cattleinsurance.data.model.Banks
-import com.hiddencoders.cattleinsurance.data.model.Branch
-import com.hiddencoders.cattleinsurance.data.model.Centers
-import com.hiddencoders.cattleinsurance.data.model.Villages
+import com.hiddencoders.cattleinsurance.data.model.*
 import com.hiddencoders.cattleinsurance.data.remote.ApiServices
 import com.hiddencoders.cattleinsurance.databinding.ActivityFarmerEntryBinding
 import com.hiddencoders.cattleinsurance.ui.BaseClass
+import com.hiddencoders.cattleinsurance.ui.farmers.FarmersViewmodel
 import com.hiddencoders.cattleinsurance.ui.tagging.TaggingActivity
 import com.hiddencoders.cattleinsurance.ui.utilis.Utilities
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,15 +38,17 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class FarmerEntryActivity : BaseClass(), AuthListner {
+class EditFarmerEntryActivity : BaseClass(), AuthListner {
     private lateinit var binding: ActivityFarmerEntryBinding
     private val viewmodel by viewModels<FarmerEntryViewmodel>()
+    private val farmersViewmodel by viewModels<FarmersViewmodel>()
     private lateinit var filePathImageCamera: File
     private lateinit var filePathImageCamera1: File
     private var getVillagesList: ArrayList<Villages> = ArrayList()
-    private var getCenterList:ArrayList<Centers> = ArrayList()
-    private var getBanksList:ArrayList<Banks> = ArrayList()
-    private var getBranchList:ArrayList<Branch> = ArrayList()
+    private var getCenterList: ArrayList<Centers> = ArrayList()
+    private var getBanksList: ArrayList<Banks> = ArrayList()
+    private lateinit var farmersData: FarmersData
+    private var getBranchList: ArrayList<Branch> = ArrayList()
     private var villagesList: java.util.ArrayList<Villages> = arrayListOf()
     var mBitmap: Bitmap? = null
 
@@ -69,8 +70,8 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
                 getVillagesData()
             }
         }*/
-        getVillagesData()
-        getBanksData()
+
+        setFarmersData()
         viewmodel.authListner = this
         viewmodel.villageName = ""
         viewmodel.farmerCode = ""
@@ -97,6 +98,45 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
         binding.btSave.setOnClickListener {
             addFormToServer()
         }
+    }
+
+    private fun setFarmersData() {
+        val gson = Gson()
+        val fData = gson.fromJson(intent.getStringExtra("data"), FarmersData::class.java)
+        farmersViewmodel.getFarmerById(fData.FARMERID.toString()).observeForever {
+            if (it.code.isNotEmpty()) {
+                if (it.Farmers.isNotEmpty()){
+                    farmersData = it.Farmers[0]
+                    val data = it.Farmers[0]
+                    binding.btSave.text = "Edit"
+                    binding.etFarmerName.setText(data.FARMERNAME)
+                    binding.etAdharNumber.setText(data.UID)
+                    binding.etFarmerCode.setText(data.FARMERID.toString())
+                    binding.etContactNumber.setText(data.CONTACTNO)
+                    binding.etBankAccountNo.setText(data.BANKACCNO)
+                    binding.etFatherName.setText(data.FATHERNAME)
+                    if (data.UID_IMAGE != null && data.BANKPB_IMAGE != null) {
+                        viewmodel.uploadAdhar = data.UID_IMAGE
+                        viewmodel.uploadBankPassbook = data.BANKPB_IMAGE
+                        lifecycleScope.launch {
+                            Glide.with(this@EditFarmerEntryActivity).load(decode(data.UID_IMAGE))
+                                .into(binding.ivImage1)
+                            Glide.with(this@EditFarmerEntryActivity).load(decode(data.BANKPB_IMAGE))
+                                .into(binding.ivImage2)
+
+                            binding.ivImage1.scaleType = ImageView.ScaleType.CENTER_CROP
+                            binding.ivImage1.setPadding(0, 0, 0, 0)
+                            binding.ivImage2.scaleType = ImageView.ScaleType.CENTER_CROP
+                            binding.ivImage2.setPadding(0, 0, 0, 0)
+                        }
+
+                    }
+                    getVillagesData()
+                    getBanksData()
+                }
+            }
+        }
+
     }
 
     private fun getVillagesData() {
@@ -126,8 +166,9 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
                                 id: Long
                             ) {
                                 val mandalName = parent?.getItemAtPosition(position).toString()
-                                if (getVillagesList.isNotEmpty()){
-                                    viewmodel.villageName = getVillagesList[position].VillID.toString()
+                                if (getVillagesList.isNotEmpty()) {
+                                    viewmodel.villageName =
+                                        getVillagesList[position].VillID.toString()
                                     getCentersData(getVillagesList[position].VillID)
                                 }
 
@@ -138,10 +179,18 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
                             }
 
                         }
+                    for (i in list.indices) {
+                        val group = getVillagesList[i].VillID.toString()
+                        if (group == farmersData.VILLID.toString()) {
+                            binding.spVillageName.setSelection(i, true)
+                        }
+                    }
+
                 }
             }
         }
     }
+
     private fun getBanksData() {
         Handler(Looper.getMainLooper()).post {
             viewmodel.getBanks().observeForever {
@@ -178,10 +227,18 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
                             }
 
                         }
+                    val li = list.distinct()
+                    for (i in li.indices) {
+                        val group = getBanksList[i].BKNAME
+                        if (group == farmersData.BKNAME.toString()) {
+                            binding.etBankName.setSelection(i, true)
+                        }
+                    }
                 }
             }
         }
     }
+
     private fun getBranchesData(code: String) {
         Handler(Looper.getMainLooper()).post {
             viewmodel.getBranches(code).observeForever {
@@ -221,7 +278,8 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
             }
         }
     }
-    private fun getCentersData(code:Int) {
+
+    private fun getCentersData(code: Int) {
         Handler(Looper.getMainLooper()).post {
             viewmodel.getCenters(code).observeForever {
                 if (it.code == "0") {
@@ -256,6 +314,13 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
                             }
 
                         }
+                    for (i in list.indices) {
+                        val group = getCenterList[i].CCODE.toString()
+                        if (group == farmersData.CCODE.toString()) {
+                            binding.spCenterName.setSelection(i, true)
+                        }
+                    }
+
                 }
             }
         }
@@ -306,13 +371,13 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
             if (filePathImageCamera.exists()) {
                 lifecycleScope.launch {
                     val filePath =
-                        Compressor.compress(this@FarmerEntryActivity, filePathImageCamera) {
+                        Compressor.compress(this@EditFarmerEntryActivity, filePathImageCamera) {
                             resolution(480, 480)
                             quality(50)
                             format(Bitmap.CompressFormat.JPEG)
                             size(209715)
                         }
-                    Glide.with(this@FarmerEntryActivity).load(filePath).into(binding.ivImage1)
+                    Glide.with(this@EditFarmerEntryActivity).load(filePath).into(binding.ivImage1)
                     binding.ivImage1.scaleType = ImageView.ScaleType.FIT_XY
                     binding.ivImage1.setPadding(0, 0, 0, 0)
                     viewmodel.uploadAdhar = encode(filePath)
@@ -320,16 +385,17 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
             }
         } else if (requestCode == TaggingActivity.IMAGE_CAMERA_REQUEST2) {
             lifecycleScope.launch {
-                val filePath = Compressor.compress(this@FarmerEntryActivity, filePathImageCamera1) {
-                    resolution(480, 480)
-                    quality(50)
-                    format(Bitmap.CompressFormat.JPEG)
-                    size(209715)
-                }
-                Glide.with(this@FarmerEntryActivity).load(filePath).into(binding.ivImage2)
+                val filePath =
+                    Compressor.compress(this@EditFarmerEntryActivity, filePathImageCamera1) {
+                        resolution(480, 480)
+                        quality(50)
+                        format(Bitmap.CompressFormat.JPEG)
+                        size(209715)
+                    }
+                Glide.with(this@EditFarmerEntryActivity).load(filePath).into(binding.ivImage2)
                 binding.ivImage2.scaleType = ImageView.ScaleType.FIT_XY
                 binding.ivImage2.setPadding(0, 0, 0, 0)
-                viewmodel.uploadBankPassbook = encode(filePath  )
+                viewmodel.uploadBankPassbook = encode(filePath)
             }
         }
     }
@@ -339,10 +405,10 @@ class FarmerEntryActivity : BaseClass(), AuthListner {
     }
 
     override fun onSuccess() {
-        Utilities.showAlertDialog(this,"Farmer Entry","Added Successfully")
+        Utilities.showAlertDialog(this, "Farmer Entry", "Added Successfully")
         Handler().postDelayed({
             onBackPressed()
-        },3000)
+        }, 3000)
     }
 
     override fun onFailure(message: String) {

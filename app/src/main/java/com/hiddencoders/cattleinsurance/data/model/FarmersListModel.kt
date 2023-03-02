@@ -11,6 +11,8 @@ data class FarmersData(
     val FARMERNAME: String,
     val FARMERID: Int,
     val CONTACTNO: String,
+    val BCODE:Int,
+    val MandalId:Int,
     val FATHERNAME: String,
     val CCODE: Int,
     val VILLID: Int,
@@ -18,6 +20,10 @@ data class FarmersData(
     val VILLNAME: String,
     val MandalName: String,
     val UID: String,
+    val BKCODE:Int,
+    val UID_IMAGE:String,
+    val BANKPB_IMAGE:String,
     val BANKACCNO: String,
-    val CREATEDBY: String
+    val CREATEDBY: String,
+    val BKNAME:String
 )

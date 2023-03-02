@@ -1,13 +1,13 @@
 package com.hiddencoders.cattleinsurance.data.model
 
-data class TagsModel(
+data class ClaimsDataModel(
     val code: String,
     val description: String,
     val Data: ArrayList<String>,
-    val Tags: ArrayList<Tags>
+    val Claim: ArrayList<Claims>
 )
 
-data class Tags(
+data class Claims(
     val CATID: Int,
     val FARMERNAME: String,
     val FARMERID:Int,

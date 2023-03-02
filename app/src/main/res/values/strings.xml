@@ -16,5 +16,6 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="add_farmer">Add Farmer</string>
+    <string name="edit"><u>Update</u></string>
 
 </resources>

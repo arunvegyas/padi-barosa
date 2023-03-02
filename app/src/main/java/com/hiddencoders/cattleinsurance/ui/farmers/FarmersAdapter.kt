@@ -1,13 +1,16 @@
 package com.hiddencoders.cattleinsurance.ui.farmers
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.hiddencoders.cattleinsurance.R
 import com.hiddencoders.cattleinsurance.data.model.FarmersData
+import com.hiddencoders.cattleinsurance.ui.farmerentry.EditFarmerEntryActivity
 
 class FarmersAdapter(val mContext: Context, var list: ArrayList<FarmersData>) :
     RecyclerView.Adapter<FarmersAdapter.Viewholder>() {
@@ -29,6 +32,10 @@ class FarmersAdapter(val mContext: Context, var list: ArrayList<FarmersData>) :
         holder.tvMobile.text = data.CONTACTNO
         holder.tvFather.text = "S/o,D/o,W/o : ${data.FATHERNAME}"
         holder.tvUID.text = "UID : ${data.UID}"
+        holder.itemView.setOnClickListener {
+            val gson = Gson()
+            mContext.startActivity(Intent(mContext,EditFarmerEntryActivity::class.java).putExtra("data",gson.toJson(data)))
+        }
     }
 
     fun filterList(filtered: ArrayList<FarmersData>){

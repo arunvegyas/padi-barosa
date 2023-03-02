@@ -35,8 +35,8 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.retagging.RetaggingActivity"
-            android:exported="false"></activity>
+            android:name=".ui.claim.ClaimActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.tagging.TaggingActivity"
             android:screenOrientation="portrait" />
@@ -56,7 +56,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".ui.verify.VerifyMobileNumberActivity"
             android:screenOrientation="portrait" />
@@ -66,6 +66,8 @@
         <activity
             android:name=".ui.farmerentry.FarmerEntryActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.tagging.EditTaggingActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.hiddencoders.cattleinsurance.ui.login.SplashScreenActivity"
             android:exported="true"
@@ -81,8 +83,16 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
         <activity
-            android:name=".ui.tags.TagsActivity"
+            android:name=".ui.claims.ClaimsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.retags.ReTagsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.tags.TagsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.farmerentry.EditFarmerEntryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.retagging.RetaggingActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

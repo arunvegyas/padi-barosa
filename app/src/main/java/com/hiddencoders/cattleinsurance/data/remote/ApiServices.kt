@@ -25,6 +25,12 @@ interface ApiServices {
     @GET("tags")
     fun getTagData(): Single<TagsModel>
 
+    @GET("retags")
+    fun getReTagData(): Single<TagsModel>
+
+    @GET("claims")
+    fun getClaimsData(): Single<ClaimModel>
+
     @GET("bankbranches")
     fun getBranchDetails(@Query("bkname") bkname: String): Single<BranchModel>
 
@@ -33,6 +39,9 @@ interface ApiServices {
 
     @POST("newtag")
     fun newFormToServer(@Body jsonObject: JsonObject): Observable<CommonResponse>
+
+    @POST("updatetag")
+    fun editFormOnServer(@Body jsonObject: JsonObject): Observable<CommonResponse>
 
     @POST("newfarmer")
     fun addFarmerToServer(@Body jsonObject: JsonObject): Single<CommonResponse>
@@ -43,4 +52,21 @@ interface ApiServices {
         @Query("name") name: String
     ): Single<FarmersListModel>
 
+    @GET("tag")
+    fun getTagDataById(@Query("catid") catid: String): Single<TagsModel>
+
+    @GET("getcatid")
+    fun getTagDataByTagNo(@Query("tagno") catid: String): Single<TagsModel>
+
+    @GET("getclaimid")
+    fun getClaimDataByTagNo(@Query("tagno") catid: String): Single<ClaimsDataModel>
+
+    @GET("farmer")
+    fun getFarmerDataById(@Query("farmerid") farmerid: String): Single<FarmersListModel>
+
+    @POST("retag")
+    fun uploadReTagFormToServer(@Body jsonObject: JsonObject): Single<CommonResponse>
+
+    @POST("claim")
+    fun uploadClaimFormToServer(@Body jsonObject: JsonObject): Single<CommonResponse>
 }

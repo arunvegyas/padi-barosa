@@ -12,4 +12,5 @@ class FarmersViewmodel @Inject constructor(val repository: FarmersRepository) : 
     fun getCenters(code: Int): LiveData<CentersModel> = repository.getCentersList(code)
     fun getCenterFarmerList(code: Int, name: String): LiveData<FarmersListModel> =
         repository.getCenterFarmerList(code, name)
+    fun getFarmerById(farmer:String):LiveData<FarmersListModel> = repository.getFarmerById(farmer)
 }

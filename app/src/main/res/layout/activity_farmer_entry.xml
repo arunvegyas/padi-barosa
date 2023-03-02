@@ -17,13 +17,14 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/ivBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:padding="20dp"
-                android:id="@+id/ivBack"
                 android:onClick="onClick"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+                android:padding="20dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,18 +68,19 @@
 
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/sp_VillageName"
+                            style="@style/spinner_font"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@null"
-                            style="@style/spinner_font"
-                            android:dropDownVerticalOffset="60dp"
                             android:dropDownWidth="match_parent"
+                            android:dropDownVerticalOffset="60dp"
                             android:hint="Select Farmer"
                             android:minHeight="60dp"
                             android:singleLine="true"
                             android:spinnerMode="dropdown"
                             android:textColor="@color/black"
-                            android:textColorHint="@color/black" />
+                            android:textColorHint="@color/black"
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                     </LinearLayout>
                     <LinearLayout
@@ -90,18 +92,19 @@
 
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/sp_Center_name"
+                            style="@style/spinner_font"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@null"
-                            style="@style/spinner_font"
-                            android:dropDownVerticalOffset="60dp"
                             android:dropDownWidth="match_parent"
+                            android:dropDownVerticalOffset="60dp"
                             android:hint="Select Farmer"
                             android:minHeight="60dp"
                             android:singleLine="true"
                             android:spinnerMode="dropdown"
                             android:textColor="@color/black"
-                            android:textColorHint="@color/black" />
+                            android:textColorHint="@color/black"
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                     </LinearLayout>
 
@@ -180,7 +183,7 @@
                         android:background="@drawable/rounded_corners"
                         android:backgroundTint="@null"
                         android:hint="Adhar Card Number"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:maxLength="12"
                         android:minHeight="60dp"
                         android:padding="10dp"
@@ -215,18 +218,19 @@
 
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/etBankName"
+                            style="@style/spinner_font"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@null"
-                            style="@style/spinner_font"
-                            android:dropDownVerticalOffset="60dp"
                             android:dropDownWidth="match_parent"
+                            android:dropDownVerticalOffset="60dp"
                             android:hint="Select Farmer"
                             android:minHeight="60dp"
                             android:singleLine="true"
                             android:spinnerMode="dropdown"
                             android:textColor="@color/black"
-                            android:textColorHint="@color/black" />
+                            android:textColorHint="@color/black"
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                     </LinearLayout>
 
@@ -239,18 +243,19 @@
 
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/sp_branchName"
+                            style="@style/spinner_font"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@null"
-                            style="@style/spinner_font"
-                            android:dropDownVerticalOffset="60dp"
                             android:dropDownWidth="match_parent"
+                            android:dropDownVerticalOffset="60dp"
                             android:hint="Select Farmer"
                             android:minHeight="60dp"
                             android:singleLine="true"
                             android:spinnerMode="dropdown"
                             android:textColor="@color/black"
-                            android:textColorHint="@color/black" />
+                            android:textColorHint="@color/black"
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                     </LinearLayout>
 

@@ -1,18 +1,18 @@
 package com.hiddencoders.cattleinsurance.data.model
 
-data class TagsModel(
+data class TagModel(
     val code: String,
     val description: String,
     val Data: ArrayList<String>,
     val Tags: ArrayList<Tags>
 )
 
-data class Tags(
+data class Tag(
     val CATID: Int,
     val FARMERNAME: String,
     val FARMERID:Int,
     val TDATE: String,
-    val BUFF_COW: String,
+    val BUFF_COW: Int,
     val BCODE:Int,
     val ccode:Int,
     val PREMIUM:String,
@@ -23,7 +23,7 @@ data class Tags(
     val IMAGE1_FILENAME:String,
     val IMAGE2_FILENAME:String,
     val TAGNO: String,
-    val BREED:String,
+    val BREED:Int,
     val RCTNO: String,
     val ISAPPROVED: Boolean,
     val CREATEDBY: String

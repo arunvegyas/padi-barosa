@@ -51,8 +51,8 @@ class FarmerEntryViewmodel @Inject constructor(
         } else if (fatherName.isNullOrEmpty()) {
             authListner!!.onFailure("Please enter father name")
             return false
-        } else if (contactNumber.isNullOrEmpty()) {
-            authListner!!.onFailure("please enter contact number")
+        } else if (contactNumber.isNullOrEmpty()|| contactNumber!!.length<10) {
+            authListner!!.onFailure("please enter valid contact number")
             return false
         } else if (adharNo.isNullOrEmpty() || adharNo!!.length < 12) {
             authListner!!.onFailure("Please enter valid adhar No")

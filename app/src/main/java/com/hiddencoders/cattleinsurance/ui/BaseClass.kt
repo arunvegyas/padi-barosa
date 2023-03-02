@@ -3,9 +3,11 @@ package com.hiddencoders.cattleinsurance.ui
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Environment
 import android.text.format.DateFormat
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.hiddencoders.cattleinsurance.ui.utilis.sharedPreferences.UserSession
 import java.io.*
@@ -33,6 +35,7 @@ open class BaseClass : AppCompatActivity() {
     ) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
+
     open fun convertUsingTraditionalWay(file: File): ByteArray? {
         val fileBytes = ByteArray(file.length().toInt())
         try {
@@ -42,6 +45,7 @@ open class BaseClass : AppCompatActivity() {
         }
         return fileBytes
     }
+
     fun encode(imageUri: File): String {
 
         var fis: FileInputStream? = null
@@ -55,15 +59,26 @@ open class BaseClass : AppCompatActivity() {
         val baos = ByteArrayOutputStream()
         image!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         var imageBytes = baos.toByteArray()
-        val imageString = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT)
+        val imageString =
+            android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT)
         return imageString
     }
 
-    fun decode(imageString: String) {
+    fun decode(imageString: String): Bitmap {
 
         // Decode base64 string to image
         val imageBytes = android.util.Base64.decode(imageString, android.util.Base64.DEFAULT)
         val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        return decodedImage
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    open fun isBase64(path: String?): Boolean {
+        return try {
+            Base64.getDecoder().decode(path)
+            true
+        } catch (e: IllegalArgumentException) {
+            false
+        }
     }
     fun getByteArray(filePath: File): ByteArray {
         val options = BitmapFactory.Options()

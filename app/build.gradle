@@ -23,8 +23,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
+        stage {
             buildConfigField "String", "API_URL", "\"http://43.242.125.150/padibharosa/\""
+            debuggable true
+
+        }
+        debug {
+            buildConfigField "String", "API_URL", "\"http://43.242.125.150/pbtest/\""
+            debuggable true
         }
     }
     compileOptions {

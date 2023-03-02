@@ -18,6 +18,8 @@ class FarmersRepository @Inject constructor(val apiServices: ApiServices) {
     private var getCentersResponse = MutableLiveData<CentersModel>()
     private lateinit var farmerDisposable: Disposable
     private var getFarmerResponse = MutableLiveData<FarmersListModel>()
+    private lateinit var farmerByIdDisposable: Disposable
+    private var getFarmerById = MutableLiveData<FarmersListModel>()
     fun getCentersList(code: Int): LiveData<CentersModel> {
         centerDisposable = apiServices.getCenterDetails(code).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -39,5 +41,16 @@ class FarmersRepository @Inject constructor(val apiServices: ApiServices) {
                     Log.d("TAG", "getCenterFarmerList: ")
                 })
         return getFarmerResponse
+    }
+
+    fun getFarmerById(farmer: String): LiveData<FarmersListModel> {
+        farmerByIdDisposable = apiServices.getFarmerDataById(farmer).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                getFarmerById.value = it
+            }, {
+                Log.d("TAG", "gwtFarmerById: ")
+            })
+        return getFarmerById
     }
 }

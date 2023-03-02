@@ -24,6 +24,7 @@ import com.hiddencoders.cattleinsurance.data.model.Farmers
 import com.hiddencoders.cattleinsurance.databinding.ActivityTaggingBinding
 import com.hiddencoders.cattleinsurance.ui.BaseClass
 import com.hiddencoders.cattleinsurance.ui.farmerentry.FarmerEntryActivity
+import com.hiddencoders.cattleinsurance.ui.farmers.FarmersViewmodel
 import com.hiddencoders.cattleinsurance.ui.utilis.Utilities
 import dagger.hilt.android.AndroidEntryPoint
 import id.zelory.compressor.Compressor
@@ -39,7 +40,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedListener {
+class EditTaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: ActivityTaggingBinding
     var mSelectedMonth: String = ""
@@ -54,6 +55,9 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
     private lateinit var rbBreedType: RadioButton
     private lateinit var rbLocalGraded: RadioButton
     private lateinit var rbAnimalStatus: RadioButton
+    private val farmersViewmodel by viewModels<FarmersViewmodel>()
+    private var farmerId: Int = 0
+    private var centerId: Int = 0
     private var farmerlist: kotlin.collections.ArrayList<Farmers> = ArrayList()
     private var centerList: kotlin.collections.ArrayList<Centers> = ArrayList()
     private val viewmodel by viewModels<TaggingViewmodel>()
@@ -66,7 +70,62 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
     }
 
     private fun setClickListners() {
-        getCentersData()
+        viewmodel.categoryId = ""
+
+        val ide = intent.getStringExtra("id")!!
+        viewmodel.getTagById(ide).observeForever {
+            if (it.code.isNotEmpty()) {
+                if (it.Tags.isNotEmpty()) {
+                    val data = it.Tags[0]
+                    binding.etDate.setText(data.TDATE.split("T")[0])
+                    binding.etMilkYeild.setText(data.MILK_YIELD)
+                    binding.etPremium.setText("${data.PREMIUM} INR")
+                    binding.etRctNo.setText(data.RCTNO)
+                    viewmodel.categoryId = data.CATID.toString()
+                    binding.etTagNo.setText(data.TAGNO)
+                    farmerId = data.FARMERID
+                    centerId = data.ccode
+                    if (data.IMAGE1_IMAGE != null && data.IMAGE2_IMAGE != null) {
+                        viewmodel.uploadImage1 = data.IMAGE1_IMAGE
+                        viewmodel.uploadImage2 = data.IMAGE2_IMAGE
+                        lifecycleScope.launch {
+                            Glide.with(this@EditTaggingActivity).load(decode(data.IMAGE1_IMAGE))
+                                .into(binding.ivImage1)
+                            Glide.with(this@EditTaggingActivity).load(decode(data.IMAGE2_IMAGE))
+                                .into(binding.ivImage2)
+
+                            binding.ivImage1.scaleType = ImageView.ScaleType.CENTER_CROP
+                            binding.ivImage1.setPadding(0, 0, 0, 0)
+                            binding.ivImage2.scaleType = ImageView.ScaleType.CENTER_CROP
+                            binding.ivImage2.setPadding(0, 0, 0, 0)
+                        }
+
+                    }
+                    viewmodel.selectFarmer = data.FARMERID.toString()
+                    if (data.BREED == "1") {
+                        binding.radioLocal.isChecked = true
+                    } else if (data.BREED == "2") {
+                        binding.radioCross.isChecked = true
+                    } else {
+                        binding.radioPure.isChecked = true
+                    }
+                    if (data.ANIMAL_STATUS == 1) {
+                        binding.radioMilk.isChecked = true
+                    } else {
+                        binding.radioPregnent.isChecked = true
+                    }
+                    if (data.BUFF_COW == "1") {
+                        binding.radioBuff.isChecked = true
+                    } else {
+                        binding.radioCow.isChecked = true
+                    }
+//                    getFarmersData(0)
+                    getCentersData()
+
+                }
+            }
+        }
+
         val c = Calendar.getInstance().time
         val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val formattedDate: String = df.format(c)
@@ -84,9 +143,11 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
         viewmodel.uploadImage2 = ""
         viewmodel.bcode = userSession.getUserId()
         viewmodel.username = userSession.getUsername()
+        binding.btSave.text = "Edit Tag"
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
+
         binding.etMilkYeild.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -184,10 +245,11 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
             viewmodel.milkFeild = binding.etMilkYeild.text.toString().trim()
             viewmodel.tagNo = binding.etTagNo.text.toString()
             viewmodel.rctNo = binding.etRctNo.text.toString()
-            viewmodel.addTaggingFormToServer()
+            viewmodel.editTagFormOnServer()
         }
 
     }
+
 
     private fun getFarmersData(code: Int) {
         Handler(Looper.getMainLooper()).post {
@@ -204,9 +266,20 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
                     this,
                     android.R.layout.simple_spinner_item, list
                 )
+
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
                 binding.spFarmerName.adapter = adapter
                 binding.spFarmerName.onItemSelectedListener = this
+                if (farmerId != 0) {
+                    for (i in list.indices) {
+                        val group = farmerlist[i].FARMERID.toString()
+                        if (group == farmerId.toString()) {
+                            binding.spFarmerName.setSelection(i, true)
+                        }
+                    }
+
+                }
             })
 
         }
@@ -229,6 +302,7 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
                 )
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spCenterName.adapter = adapter
+
                 binding.spCenterName.onItemSelectedListener =
                     object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
@@ -245,6 +319,16 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
                         }
 
                     }
+                if (centerId != 0) {
+                    for (i in list.indices) {
+                        val group = centerList[i].CCODE.toString()
+                        if (group == centerId.toString()) {
+                            binding.spCenterName.setSelection(i, true)
+                        }
+                    }
+
+                }
+
             })
 
         }
@@ -290,13 +374,14 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
         if (requestCode == IMAGE_CAMERA_REQUEST && resultCode == RESULT_OK) {
             if (filePathImageCamera.exists()) {
                 lifecycleScope.launch {
-                    val filePath = Compressor.compress(this@TaggingActivity, filePathImageCamera) {
-                        resolution(480, 480)
-                        quality(80)
-                        format(Bitmap.CompressFormat.JPEG)
-                        size(209715)
-                    }
-                    Glide.with(this@TaggingActivity).load(filePath).into(binding.ivImage1)
+                    val filePath =
+                        Compressor.compress(this@EditTaggingActivity, filePathImageCamera) {
+                            resolution(480, 480)
+                            quality(80)
+                            format(Bitmap.CompressFormat.JPEG)
+                            size(209715)
+                        }
+                    Glide.with(this@EditTaggingActivity).load(filePath).into(binding.ivImage1)
                     binding.ivImage1.scaleType = ImageView.ScaleType.CENTER_CROP
                     binding.ivImage1.setPadding(0, 0, 0, 0)
                     viewmodel.uploadImage1 = encode(filePath)
@@ -304,13 +389,13 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
             }
         } else if (requestCode == IMAGE_CAMERA_REQUEST2 && resultCode == RESULT_OK) {
             lifecycleScope.launch {
-                val filePath = Compressor.compress(this@TaggingActivity, filePathImageCamera1) {
+                val filePath = Compressor.compress(this@EditTaggingActivity, filePathImageCamera1) {
                     resolution(480, 480)
                     quality(80)
                     format(Bitmap.CompressFormat.JPEG)
                     size(209715)
                 }
-                Glide.with(this@TaggingActivity).load(filePath).into(binding.ivImage2)
+                Glide.with(this@EditTaggingActivity).load(filePath).into(binding.ivImage2)
                 binding.ivImage2.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.ivImage2.setPadding(0, 0, 0, 0)
                 viewmodel.uploadImage2 = encode(filePath)
@@ -394,7 +479,7 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
     }
 
     override fun onSuccess() {
-        Utilities.showAlertDialog(this, "Tagging", "Added Successfully")
+        Utilities.showAlertDialog(this, "Tagging", "Updated Successfully")
         Handler().postDelayed({
             onBackPressed()
         }, 3000)
@@ -408,11 +493,10 @@ class TaggingActivity : BaseClass(), AuthListner, AdapterView.OnItemSelectedList
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val farmerName = farmerlist[position].FARMERID.toString()
         viewmodel.selectFarmer = farmerName
+
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         viewmodel.selectFarmer = ""
     }
-
-
 }

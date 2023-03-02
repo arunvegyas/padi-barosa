@@ -1,4 +1,4 @@
-package com.hiddencoders.cattleinsurance.ui.tags
+package com.hiddencoders.cattleinsurance.ui.retags
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,16 +9,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hiddencoders.cattleinsurance.data.model.Tags
 import com.hiddencoders.cattleinsurance.databinding.ActivityTagsBinding
 import com.hiddencoders.cattleinsurance.ui.BaseClass
+import com.hiddencoders.cattleinsurance.ui.claim.ClaimActivity
+import com.hiddencoders.cattleinsurance.ui.claims.ClaimsAdapter
 import com.hiddencoders.cattleinsurance.ui.tagging.EditTaggingActivity
-import com.hiddencoders.cattleinsurance.ui.tagging.TaggingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TagsActivity : BaseClass(), TagsAdapter.onUpdateListener {
+class ReTagsActivity : BaseClass(), ReTagsAdapter.onUpdateListener {
     private lateinit var binding: ActivityTagsBinding
-    private val viewmodel by viewModels<TagsViewmodel>()
+    private val viewmodel by viewModels<ReTagsViewmodel>()
     private var tagsList: ArrayList<Tags> = ArrayList()
-    private lateinit var adapter: TagsAdapter
+    private lateinit var adapter: ReTagsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTagsBinding.inflate(layoutInflater)
@@ -32,8 +33,8 @@ class TagsActivity : BaseClass(), TagsAdapter.onUpdateListener {
     }
 
     private fun setData() {
-        binding.tvTitle.text = "Tags"
-        adapter = TagsAdapter(this, tagsList,this)
+        binding.tvTitle.text = "ReTags"
+        adapter = ReTagsAdapter(this, tagsList,this)
         binding.rvTags.layoutManager = LinearLayoutManager(this)
         binding.rvTags.setHasFixedSize(true)
         binding.rvTags.adapter = adapter
@@ -41,10 +42,10 @@ class TagsActivity : BaseClass(), TagsAdapter.onUpdateListener {
             onBackPressed()
         }
         binding.fab.setOnClickListener {
-            startActivity(Intent(this,TaggingActivity::class.java))
+            startActivity(Intent(this, ClaimActivity::class.java))
         }
         Handler(Looper.getMainLooper()).post {
-            viewmodel.getTags().observeForever {
+            viewmodel.getReTags().observeForever {
                 if (it.code == "0") {
                     tagsList.clear()
                     tagsList.addAll(it.Tags)

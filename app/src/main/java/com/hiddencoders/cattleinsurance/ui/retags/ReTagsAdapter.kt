@@ -1,4 +1,4 @@
-package com.hiddencoders.cattleinsurance.ui.tags
+package com.hiddencoders.cattleinsurance.ui.retags
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,10 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hiddencoders.cattleinsurance.R
 import com.hiddencoders.cattleinsurance.data.model.Tags
+import com.hiddencoders.cattleinsurance.ui.claims.ClaimsAdapter
 import com.hiddencoders.cattleinsurance.ui.utilis.convertDateFormat
 
-class TagsAdapter(val mContext: Context, val list: ArrayList<Tags>,val listner:onUpdateListener) :
-    RecyclerView.Adapter<TagsAdapter.ViewHolder>() {
+class ReTagsAdapter(val mContext: Context, val list: ArrayList<Tags>, val listner: onUpdateListener) :
+    RecyclerView.Adapter<ReTagsAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var name = view.findViewById<TextView>(R.id.tvFarmerName)
         var date = view.findViewById<TextView>(R.id.tvDate)
@@ -22,9 +23,8 @@ class TagsAdapter(val mContext: Context, val list: ArrayList<Tags>,val listner:o
         var isApproved = view.findViewById<TextView>(R.id.tvApproved)
         var createdBy = view.findViewById<TextView>(R.id.tvCreatedBy)
         var breed = view.findViewById<TextView>(R.id.tvBuffaleBreed)
-        var update = view.findViewById<ImageView>(R.id.tvEdit)
         var animalStatus = view.findViewById<TextView>(R.id.tvAnimalStatus)
-
+        var update = view.findViewById<ImageView>(R.id.tvEdit)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,7 +54,7 @@ class TagsAdapter(val mContext: Context, val list: ArrayList<Tags>,val listner:o
             holder.update.visibility = View.GONE
         } else {
             holder.isApproved.text = "Pending"
-            holder.update.visibility = View.VISIBLE
+            holder.update.visibility = View.GONE
         }
 
         holder.update.setOnClickListener {
